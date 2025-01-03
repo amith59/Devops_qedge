@@ -1,0 +1,9 @@
+go to the launch instances
+with all ports aon in sg group
+after that we install package httpd
+-1 yum install httpd
+-2 sudo systemctl start httpd
+-2 sudo systemctl enable httpd
+-3 cd /var/www/html:
+
+https://www.sourcecodester.com/download-code?nid=14548&title=Simple+College+Website+using+HTML%2FPHP%2FMySQLi+with+Source+Code

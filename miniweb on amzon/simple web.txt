@@ -1,0 +1,9 @@
+go to the launch instances
+with all ports aon in sg group
+after that we install package httpd
+-1 yum install httpd
+-2 sudo systemctl start httpd
+-2 sudo systemctl enable httpd
+-3 cd /var/www/html:
+with database with php 
+https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Tutorials.WebServerDB.CreateWebServer.html
