@@ -1,0 +1,2 @@
+1- ansible amit -b -m yum -a "pkg=httpd state=present"
+2- ansible amit -b -m copy -a "src=copyfile1 dest=/tmp"

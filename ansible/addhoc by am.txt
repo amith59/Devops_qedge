@@ -1,0 +1,5 @@
+-1 ansible amit -a "sudo yum install java -y"
+-2 ansible amit -a "ls"
+-3 ansible amit -a "touch file4"
+-4 ansible amit -a "sudo install httpd -y "
+-5 ansible all -m ping

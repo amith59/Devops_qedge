@@ -1,0 +1,232 @@
+The world has gone digital, and what started for many companies as a few computers on an internal network has 
+become thousands of virtual cloud servers on a global network. 
+
+Digital business is essentially software, which means that organizations that expect to thrive in a digital environment 
+must have an improved competence in software delivery.”
+
+Ansible was founded to provide a new way to think about managing systems and applications that better fit this new world.
+
+Ansible is an open source, powerful automation software for configuring, managing and deploying software applications 
+on the nodes without any downtime just by using SSH.
+
+most of the IT Automation tools runs as a agent in remote host, but ansible just need a SSH connection 
+and Python (2.4 or later) to be installed on the remote nodes to perform it’s action.
+
+What is Ansible?
+==========
+
+Ansible categorize into two types of servers: controlling machines and nodes.
+
+The controlling machine, where Ansible is installed and Nodes are managed by this controlling machine over SSH. 
+The location of nodes are specified by controlling machine through its inventory.
+
+Ansible is agent-less, that means no need of any agent(software) installation on remote nodes, 
+so it means there are no any background daemons or programs are executing for Ansible, when it’s not managing any nodes.
+
+Ansible can handle 100’s of nodes from a single system over SSH connection and the entire operation 
+can be handled and executed by one single command ‘ansible’. 
+But, in some cases, where you required to execute multiple commands for a deployment, here we can build playbooks.
+
+Playbooks are bunch of commands which can perform multiple tasks and each playbooks are in YAML file format.
+
+
+What is the use of Ansible?
+================
+
+Ansible can be used in IT infrastructure to manage and deploy software applications to remote nodes.
+
+ For example, let’s say you need to deploy a single software or multiple software to 100’s of nodes by a single command, here ansible comes into picture, with the help of Ansible you can deploy as many as applications to many nodes with one single command, but you must have a little programming knowledge for understanding the ansible scripts.
+
+Installation of Ansible
+=================
+Pre-Requisities
+-----------------
+
+1.Operating System: RHEL/CentOS/Fedora/Ubuntu/Debian/Linux Mint
+
+2.sshpass: A non-interactive ssh password authentication.
+
+3. A YAML parser and emitter for the Python programming language.
+
+=================================================
+Installation
+
+1. Ansible Server ip: 192.168.40.128
+		   password:admin
+
+2. ansibleclient IP: 192.168.40.129
+		password: client	   (as well for root user credentials root/client)      
+
+Ansible Server:192.168.40.128
+=========================
+1.Install the epel respository
+	EPEL (Extra Packages for Enterprise Linux) is open source and free community based repository
+	EPEL or Extra Packages for Enterprise Linux repository is a free and community based repository 
+	which provide many extra open source software packages which are not available in default YUM repository.
+
+	We need to install EPEL repository into the system as Ansible is available in default YUM repository 
+
+	[root@localhost abclearn]# yum install epel-release
+	or
+	(on AWS EC2)
+	[root@localhost abclearn]#amazon-linux-extras install epel
+2. Optional
+	to change the host name 
+	[root@localhost abclearn]# hostname ansibleserver
+	[root@localhost abclearn]# sudo -i
+	[root@ansibleserver ~]# 
+
+3. Update the packages in your server
+	[root@ansibleserver ~]# yum update -y
+
+4. Install the dependencies
+	install ansible on amazon ec2 in aws
+	[root@ansibleserver ~]# yum install ansible
+		or
+
+	[root@ansibleserver ~]# yum install git python python-devel python-pip openssl ansible
+
+	or
+    
+	download the ansible rpm file explicitly and install ansible
+	[root@ansibleserver ~]#	
+	[root@ansibleserver ~]#  yum install ansible-2.9.4-1.el7.ans.noarch.rpm
+	
+
+5.check the ansible version
+	#ansible --version
+
+	cd /etc/ansible
+	Open the configuration file 
+	# vi ansible.cfg
+	   uncomment the following:
+		inventory
+		sudo_user
+6. Open the hosts file in the same location
+	(at the end, enter the following)
+
+	[root@ansibleserver ansible]# vi hosts
+	[AppServers]
+	192.168.40.129 (node/client ipaddress)
+
+
+	(save and exit)
+7. create the ansible user in your AnsibleServer machine
+
+	(Creating 'ansibleadm' user in AnsibleServer and AnsibleClient nodes machines as well with the same name)
+
+	[root@ansibleserver ansible]# useradd ansibleadm
+	change the password for the ansible user
+
+	[root@ansibleserver ansible]# passwd ansibleadm
+	 (password i set for user 'ansibleadm'=adm@1234)
+
+8.  Now need to change the visudo file to provide root permissions to the user 'ansibleadm' which we created.
+	[root@ansibleserver ansible]# visudo
+	(add this under the root ALL=(ALL)
+	ansible ALL=(ALL)  NOPASSWD: ALL
+
+ClientNode
+9. Now add the 'ansibleadm' user in client node(192.168.40.129)
+
+	[root@localhost ~]#adduser ansibleadm
+	[root@localhost ~]#passwd ansibleadm	
+
+	[root@ansibleserver ansible]# visudo
+
+	(add this under the root ALL=(ALL)
+	ansible ALL=(ALL)  NOPASSWD: ALL
+	
+	
+
+=============================
+Connect to Ansible Server 192.168.40.128
+[root@localhost ~]su - ansibleadm
+(provide the password)
+(to generate the .ssh key )
+[ansible@ansibleserver ~]$ ssh-keygen
+[ansible@ansibleserver ~]$ ls -la
+
+
+========================
+Connect to your client node(192.168.40.129)
+	[ansible@localhost /]$ cd /home
+	[ansible@localhost ~]$ su  - ansibleadm
+	Password:ansible123
+	[ansible@localhost ~]$ whoami
+	ansible
+	[ansible@localhost ~]$ ls -la
+
+
+
+
+
+====================================
+Connect to your AnsibleServer(192.168.40.128)
+
+	$ssh-copy-id <ansibleusername>@<private_ipaddr_nodemachine>
+	$ssh-copy-id ansibleadm@192.168.40.129(client nodeip)
+
+(this command copy the key gen from server into the client node)
+Now we can check in the Client Node that .ssh folder will be created.
+[ansible@localhost ~]$ ls -la
+
+(note: we got an error here, so need to enable the root user in the worker node )
+
+Connect to the worker node1 
+
+[root@ip-10-7-2-198 ec2-user]# passwd root
+Changing password for user root.
+New password:
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password:
+passwd: all authentication tokens updated successfully.
+[root@ip-10-7-2-198 ec2-user]# vim /etc/ssh/sshd_config
+ (make the following changes in this file)
+ uncomment
+  PermitRootLogin yes
+  (default PasswordAuthentication is 'no')
+ PasswordAuthentication yes
+(save the above changes :wq)
+
+After the above changes, need to restart the sshd server
+
+[root@ip-10-7-2-198 ec2-user]# systemctl restart sshd
+
+(Connect to your master node(AnsibleServer)
+repeat the step in MasterNode
+[ansibleadm@ansibleserver ~]$ ssh-copy-id ansibleadm@10.7.2.198
+this time it get success to copy the 'sshkey' in your workernode1 
+
+
+
+
+==================================
+from the AnsibleServer(192.168.40.128)
+now try to connect to the remote system without providing the password
+
+[ansible@ansibleserver ~]$ ssh <clientnodeip>
+[ansible@ansibleserver ~]$ ssh 192.168.40.129
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

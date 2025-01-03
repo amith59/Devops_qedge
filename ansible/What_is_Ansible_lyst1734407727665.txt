@@ -1,0 +1,46 @@
+Ansible
+
+Ansible is an open source DevOps tool which can help the business in configuration management, deployment, provisioning, etc. 
+
+It is straightforward to deploy;
+
+it leverages SSH to communicate between servers. 
+
+It uses the playbook to describe automation jobs, and playbook uses a very simple language YAML.
+
+Ansible provides reliability, consistency, and scalability to your IT infrastructure. 
+
+We can automate configurations of databases, storage, networks, firewalls using Ansible. 
+
+It makes sure that all the necessary packages and all other software are consistent on the server to run the application.
+
+
+Features
+
+Agentless – Which means there is no kind of software or any agent managing the node like other solution such as puppet and chef.
+
+Python – Built on top of python, which is fast and one of the robust programming languages in today’s world.
+
+SSH – Very simple passwordless network authentication protocol which is secure. So, your responsibility is to copy this key to the client machines
+
+Push architecture –  Push the necessary configurations to  the client machines.
+		 All you have to do is, write down those configurations (playbook) and push them all at once to the nodes. 
+		You see how powerful it can be to push the changes to thousands of servers in minutes.
+
+Setup –  a minimal requirement and configuration needed to get it to work.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
