@@ -1,0 +1,9 @@
+first we make a virtual network after that 
+-1 make subnet name public(any name we give)
+-2 make subnet name private
+-3 after that create a vm(virtual machine) 
+-4 two vm we should create one with public ip 
+5- one is without public ip
+-6 after that create a natgateway 
+-7 create public ip at natgateway then we come select the
+subnet(private for where we launch the vm's we have to select that)
